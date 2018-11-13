@@ -18,8 +18,20 @@ def test_characters():
     assert 'A' in d.alphabet_list
     assert 'a' in d.alphabet_list
 
-@pytest.mark.skip
-def test_emit_patterns():
-    """emit_patterns
+
+class TestDatasetsGenerator:
+    """DatasetsGenerator
     """
-    d.emit_patterns()
+
+
+    def test_generate_patterns(self):
+        """generate_patterns
+        """
+        datasets_generator = d.create_datasets_generator()
+        assert len(datasets_generator.generate_petterns()) == 16425
+    
+    def test_generate_images(self):
+        """
+        """
+        datasets_generator = d.create_datasets_generator()
+        assert len(datasets_generator.generate_images()) == 16425

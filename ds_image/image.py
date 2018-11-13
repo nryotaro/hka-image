@@ -2,15 +2,16 @@
 """
 import os
 from PIL import ImageFont, ImageDraw, Image
+import numpy as np
 
 
 class ImageGenerator:
     """Generates datasets.
 
-    Parameters
+    Attributes
     ----------
-    :py:class:`PIL.ImageFont.FreeTypeFont`
-
+    _image_font : :py:class:`PIL.ImageFont.FreeTypeFont`
+        Use the font to draw characters.
     """
 
     def __init__(self, image_font):
@@ -38,3 +39,16 @@ def create_image_generator():
     font_path = os.path.join(os.path.dirname(__file__), 'mplus-1mn-regular.ttf')
     font = ImageFont.truetype(font_path, 18)
     return ImageGenerator(font)
+
+def vectorize_image(image):
+    """Converts an image to a numpy.ndarray.
+
+    Parameters
+    ----------
+    image : PIL.Image
+
+    Returns
+    -------
+    numpy.ndarray
+    """
+    return np.array(image, 'f').reshape(1, -1)
