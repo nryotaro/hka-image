@@ -6,6 +6,10 @@ import ds_image.image as i
 
 def train():
     """Fits the estimater on generated datasets.
+
+    TODO
+    ----
+    fix
     """
     generator = d.create_datasets_generator()
     labeled_images = generator.generate_images()

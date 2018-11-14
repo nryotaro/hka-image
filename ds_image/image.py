@@ -27,6 +27,11 @@ class ImageGenerator:
             Top left corner of the text.
         size : int
             The size of the char.
+
+        Returns
+        -------
+        PIL.Image
+            The image with the given properties.
         """
         img = Image.new("L", (28,28), 'white')
         draw = ImageDraw.Draw(img)

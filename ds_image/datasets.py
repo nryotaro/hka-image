@@ -39,7 +39,8 @@ class DatasetsGenerator:
         Returns 
         -------
         list
-            Each item is the tuple that the first element is an 
+            Each item is the tuple that the first element is an image, 
+            and the second one represents the writing system of the letter in the image.
         """
         return [(self._image_generator.generate(char, xy, size), label.value) \
                 for xy, size, label, char in self.generate_petterns()]
