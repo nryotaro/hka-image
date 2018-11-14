@@ -51,9 +51,26 @@ def vectorize_image(image):
     Parameters
     ----------
     image : PIL.Image
+        an image.
 
     Returns
     -------
     numpy.ndarray
+        The shape is (1, -1).
     """
     return np.array(image, 'f').reshape(1, -1)
+
+def vectorize_images(images):
+    """Convers images to numpy.ndarray.
+
+    Parameters
+    ----------
+    images : list
+        Each item is an :py:class:`PIL.Image` object.
+
+    Returns
+    -------
+    numpy.ndarray
+        The length of the row is that of images.
+    """
+    return np.concatenate([vectorize_image(image) for image in images], axis=0)
