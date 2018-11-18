@@ -3,6 +3,7 @@
 import os
 import pytest
 import numpy as np
+import pandas as pd
 from PIL import Image, ImageDraw, ImageFont
 import ds_image.image as i
 
@@ -53,3 +54,10 @@ def test_vectorize_images():
     """
     image0, image1 = generate_a_image(), generate_a_image()
     assert i.vectorize_images([image0, image1]).shape == (2, 784)
+
+def test_read_images():
+    """read_images
+    """
+    image_dir = os.path.join(os.path.dirname(__file__), 'images')
+    images_array = i.read_images(image_dir)
+    assert images_array.shape == (3, 784)

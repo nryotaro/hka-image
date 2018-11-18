@@ -41,7 +41,8 @@ class ImageGenerator:
 def create_image_generator():
     """Constructs :py:class:`ImageGenerator`
     """
-    font_path = os.path.join(os.path.dirname(__file__), 'mplus-1mn-regular.ttf')
+    font_path = os.path.join(
+        os.path.dirname(__file__), 'mplus-1mn-regular.ttf')
     font = ImageFont.truetype(font_path, 18)
     return ImageGenerator(font)
 
@@ -74,3 +75,22 @@ def vectorize_images(images):
         The length of the row is that of images.
     """
     return np.concatenate([vectorize_image(image) for image in images], axis=0)
+
+def read_images(image_dir):
+    """Reads images in the specified directory into np.ndarray.
+
+    images are converted to numpy.ndarray.
+
+    Parameters
+    ----------
+    image_dir : str
+        directory path.
+
+    Returns
+    -------
+    numpy.ndarray
+    """
+    images = [Image.open(os.path.join(image_dir, image_file)) \
+             for image_file in sorted(os.listdir(image_dir)) \
+             if image_file.endswith('.png')]
+    return vectorize_images(images)    

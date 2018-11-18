@@ -125,11 +125,8 @@ class Classifier:
     def _prepare_session(self):
         """
         """
-        sess = tf.Session()
-        sess.run(tf.initialize_all_variables())
+        self.sess = tf.Session()
+        self.sess.run(tf.initialize_all_variables())
         self.saver = tf.train.Saver()
-        summary = tf.merge_all_summaries()
-        writer = tf.train.SummaryWriter(self._log_dir, sess.graph)
-        self.sess = sess
-        self.summary = summary
-        self.writer = writer
+        self.summary = tf.merge_all_summaries()
+        self.writer = tf.train.SummaryWriter(self._log_dir, self.sess.graph)

@@ -10,6 +10,6 @@ setup(name='ds-image',
       license='UZABASE Inc.',
       classifiers=['Programming Language :: Python :: 3.6'],
       packages=find_packages(),
-      install_requires=['tensorflow', 'scikit-learn', 'pillow'],
+      install_requires=['tensorflow', 'scikit-learn', 'pillow', 'pandas'],
       extras_require={'dev': ['ipython', 'pytest-watch', 'pylint', 'autopep8', 'pytest-env', 'pytest']},
       entry_points={'console_scripts': ['ds-image=ds_image:main']})
