@@ -18,7 +18,7 @@ def read_answer_file(target_file):
 
     """
     df = pd.read_csv(target_file)
-    return np.array([_convert(label).value for label in df.iloc[:, 1]])
+    return np.concatenate([_convert(label) for label in df.iloc[:, 1]], axis=0)
 
 def _convert(label):
     """Converts label to an integer.
@@ -33,10 +33,10 @@ def _convert(label):
     :py:class:`ds_image.label.Targets`
     """
     if label == 'hiragana':
-        return l.Targets.HIRAGANA
+        return l.Targets.HIRAGANA.one_hot()
     if label == 'katakana':
-        return l.Targets.KATAKANA
+        return l.Targets.KATAKANA.one_hot()
     if label == 'latinalphabet':
-        return l.Targets.ALPHABET
+        return l.Targets.ALPHABET.one_hot()
     
     raise ValueError(label)

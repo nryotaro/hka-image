@@ -42,18 +42,16 @@ class Classifier:
         x_test : numpy.ndarray
 
         y_test : numpy.ndarray
-
-        TODO
-        ----
         """
         x_train_iter, y_train_iter = self._batch(x_train, y_train)
+
         for index in range(20000):
             x_batch, y_batch = next(x_train_iter), next(y_train_iter)
             self.sess.run(
                 self.train_step, 
                 feed_dict={self.x:x_batch, self.t:y_batch, self.keep_prob:0.5})
 
-            if index % 500 == 0:
+            if index % 50 == 0:
                 loss_val, acc_val = self.sess.run(
                     [self.loss, self.accuracy],
                     feed_dict={self.x: x_test, self.t: y_test, self.keep_prob:1.0})
@@ -106,27 +104,28 @@ class Classifier:
             self.keep_prob = tf.placeholder(tf.float32)
             hidden2_drop = tf.nn.dropout(hidden2, self.keep_prob)
         with tf.name_scope('output'):
-            w0 = tf.Variable(tf.zeros([num_units2, 10]))
-            b0 = tf.Variable(tf.zeros([10]))
+            w0 = tf.Variable(tf.zeros([num_units2, 3]))
+            b0 = tf.Variable(tf.zeros([3]))
             p = tf.nn.softmax(tf.matmul(hidden2_drop, w0) + b0)
 
         with tf.name_scope('optimization'):
             self.t = tf.placeholder(tf.float32, [None, 3], name='labels')
-            self.loss = -tf.reduce_sum(self.t * tf.log(p), name='loss')
-            self.train_step = tf.train.AdamOptimizer().minimize(loss)
+            # self.loss = -tf.reduce_sum(self.t * tf.log(p), name='loss')
+            self.loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(p, self.t))
+            self.train_step = tf.train.AdamOptimizer().minimize(self.loss)
         with tf.name_scope('evaluation'):
             correct_prediction = tf.equal(tf.argmax(p, 1), tf.argmax(self.t, 1))
             self.accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32), name='accuracy')
 
-        tf.scalar_summary("loss", self.loss)
-        tf.scalar_summary("accuracy", self.accuracy)
+        tf.summary.scalar("loss", self.loss)
+        tf.summary.scalar("accuracy", self.accuracy)
 
     
     def _prepare_session(self):
         """
         """
-        self.sess = tf.Session()
-        self.sess.run(tf.initialize_all_variables())
+        self.sess = tf.InteractiveSession()
+        self.sess.run(tf.global_variables_initializer())
         self.saver = tf.train.Saver()
-        self.summary = tf.merge_all_summaries()
-        self.writer = tf.train.SummaryWriter(self._log_dir, self.sess.graph)
+        self.summary = tf.summary.merge_all()
+        self.writer = tf.summary.FileWriter(self._log_dir, self.sess.graph)

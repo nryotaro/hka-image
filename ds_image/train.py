@@ -21,7 +21,7 @@ def train(log_dir, x_test,  y_test):
     """
     generator = d.create_datasets_generator()
     labeled_images = generator.generate_images()
-    labels = np.array([label for _, label in labeled_images])
+    labels = np.concatenate([label for _, label in labeled_images], axis=0)
     images = i.vectorize_images([image for image, _ in labeled_images])
 
     classifier = c.Classifier(log_dir, 32, 64, 50)

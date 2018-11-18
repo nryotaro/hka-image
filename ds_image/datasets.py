@@ -40,9 +40,9 @@ class DatasetsGenerator:
         -------
         list
             Each item is the tuple that the first element is an image, 
-            and the second one represents the writing system of the letter in the image.
+            and the second one is a one-hot vector that represents the writing system of the letter in the image.
         """
-        return [(self._image_generator.generate(char, xy, size), label.value) \
+        return [(self._image_generator.generate(char, xy, size), label.one_hot()) \
                 for xy, size, label, char in self.generate_petterns()]
 
     def generate_petterns(self):
