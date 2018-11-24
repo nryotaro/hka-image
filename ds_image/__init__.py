@@ -13,6 +13,5 @@ def main():
     opts = p.parse(sys.argv[1:])
 
     l.config(opts.verbose)
-    y_test = a.read_answer_file(opts.answerfile)
-    x_test = i.read_images(opts.imagedir)
+    x_test, y_test = a.load_test_datasets(opts.imagedir, opts.answerfile)
     t.train(opts.logdir, x_test, y_test)

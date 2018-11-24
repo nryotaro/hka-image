@@ -16,7 +16,7 @@ class ImageGenerator:
 
     def __init__(self, image_font):
         self._image_font = image_font
-    
+
     def generate(self, char, xy, size):
         """
         Parameters
@@ -75,6 +75,16 @@ def vectorize_images(images):
         The length of the row is that of images.
     """
     return np.concatenate([vectorize_image(image) for image in images], axis=0)
+
+def read_image(image_file):
+    """
+    """
+
+    image = Image.open(image_file)
+    vec_img = vectorize_image(image)
+    image.close()
+    return vec_img
+
 
 def read_images(image_dir):
     """Reads images in the specified directory into np.ndarray.
