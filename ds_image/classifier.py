@@ -52,10 +52,11 @@ class Classifier:
                 feed_dict={self.x:x_batch, self.t:y_batch, self.keep_prob:0.5})
 
             if index % 50 == 0:
-                loss_val, acc_val = self.sess.run(
-                    [self.loss, self.accuracy],
+                summary, loss_val, acc_val = self.sess.run(
+                    [self.summary, self.loss, self.accuracy],
                     feed_dict={self.x: x_test, self.t: y_test, self.keep_prob:1.0})
                 _LOGGER.info('Step: %d, Loss: %f, Accuracy: %f' % (index, loss_val, acc_val))
+                self.writer.add_summary(summary, index)
     
     def _batch(self, x_train, y_train):
         """
@@ -106,12 +107,13 @@ class Classifier:
         with tf.name_scope('output'):
             w0 = tf.Variable(tf.zeros([num_units2, 3]))
             b0 = tf.Variable(tf.zeros([3]))
-            p = tf.nn.softmax(tf.matmul(hidden2_drop, w0) + b0)
+            # p = tf.nn.softmax(tf.matmul(hidden2_drop, w0) + b0)
+            p = tf.matmul(hidden2_drop, w0) + b0
 
         with tf.name_scope('optimization'):
             self.t = tf.placeholder(tf.float32, [None, 3], name='labels')
             # self.loss = -tf.reduce_sum(self.t * tf.log(p), name='loss')
-            self.loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(p, self.t))
+            self.loss = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=p, labels=self.t))
             self.train_step = tf.train.AdamOptimizer().minimize(self.loss)
         with tf.name_scope('evaluation'):
             correct_prediction = tf.equal(tf.argmax(p, 1), tf.argmax(self.t, 1))

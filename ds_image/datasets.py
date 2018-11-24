@@ -9,7 +9,7 @@ import ds_image.image as i
 exhaustive_xy = list(itertools.product(range(3, 8), range(3, 8)))
 
 #: Contains the hiragana characters.
-hiragana_list = [chr(i) for i in range(12353, 12436)]
+hiragana_list = [chr(i) for i in range(12353, 12436)] # ゔ
 
 #: Contains the katakana characters.
 katanaka_list = [chr(i) for i in range(12449, 12532+1)]

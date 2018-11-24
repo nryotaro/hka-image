@@ -90,7 +90,11 @@ def read_images(image_dir):
     -------
     numpy.ndarray
     """
-    images = [Image.open(os.path.join(image_dir, image_file)) \
-             for image_file in sorted(os.listdir(image_dir)) \
-             if image_file.endswith('.png')]
-    return vectorize_images(images)    
+    img_vecs = []
+    for img_path in [os.path.join(image_dir, image_file) for image_file in sorted(os.listdir(image_dir)) if image_file.endswith('.png')]:
+        image = Image.open(img_path)
+        img_vecs.append(vectorize_image(image))
+        image.close()
+
+    cat = np.concatenate(img_vecs, axis=0)
+    return cat
