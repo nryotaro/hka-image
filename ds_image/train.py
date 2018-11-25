@@ -7,7 +7,7 @@ import ds_image.image as i
 import ds_image.classifier as c
 
 
-def train(log_dir, x_test,  y_test):
+def train(x_test, y_test):
     """Fits the estimater on generated datasets.
 
     Parameters
@@ -26,7 +26,8 @@ def train(log_dir, x_test,  y_test):
     labels = np.concatenate([label for _, label in labeled_images], axis=0)
     images = i.vectorize_images([image for image, _ in labeled_images])
 
-    classifier = c.Classifier(log_dir, 32, 64, 50)
-    classifier.prepare()
-    classifier.fit(images, labels, x_test, y_test)
+    classifier = c.create_classifier()
+    classifier.fit(images/255, labels, epochs=20, batch_size=50,
+          validation_data=(x_test/255, y_test))
+
     return classifier 

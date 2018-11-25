@@ -14,4 +14,4 @@ def main():
 
     l.config(opts.verbose)
     x_test, y_test = a.load_test_datasets(opts.imagedir, opts.answerfile)
-    t.train(opts.logdir, x_test, y_test)
+    t.train(x_test, y_test)

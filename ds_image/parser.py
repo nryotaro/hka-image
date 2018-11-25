@@ -13,8 +13,8 @@ def parse(args):
     -------
     Namespace
     """
-    parser = argparse.ArgumentParser(description='B')
-    parser.add_argument('logdir', help='A directory to store log files.')
+    parser = argparse.ArgumentParser(
+        description='A classifier that estimates writing system of images.')
     parser.add_argument('imagedir', help='A directory images are put.')
     parser.add_argument('answerfile', help='The file in  CSV format contains target labels.')
     parser.add_argument('-v', '--verbose', action='store_true', help='Be verbose.')

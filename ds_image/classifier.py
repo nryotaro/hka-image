@@ -30,7 +30,7 @@ class Classifier:
             # prepare_model
             self._construct_network()
             self._prepare_session()
-    
+
     def fit(self, x_train, y_train, x_test, y_test):
         """
         Parameters
@@ -57,7 +57,7 @@ class Classifier:
                     feed_dict={self.x: x_test, self.t: y_test, self.keep_prob:1.0})
                 _LOGGER.info('Step: %d, Loss: %f, Accuracy: %f' % (index, loss_val, acc_val))
                 self.writer.add_summary(summary, index)
-    
+
     def _batch(self, x_train, y_train):
         """
         Parameters
@@ -131,3 +131,49 @@ class Classifier:
         self.saver = tf.train.Saver()
         self.summary = tf.summary.merge_all()
         self.writer = tf.summary.FileWriter(self._log_dir, self.sess.graph)
+
+class CNNClassifier:
+
+    def __init__(self):
+        """
+        """
+
+
+def create_classifier():
+    """
+    """
+    model = tf.keras.Sequential([
+        tf.keras.layers.Reshape((28, 28, 1), input_shape=(784,)),
+        tf.keras.layers.Conv2D(32, kernel_size=5, activation=tf.nn.relu),
+        tf.keras.layers.MaxPool2D(padding="same"),
+        tf.keras.layers.Conv2D(64, kernel_size=5, activation=tf.nn.relu),
+        tf.keras.layers.MaxPool2D(padding="same"),
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(1024, activation=tf.nn.relu),
+        tf.keras.layers.Dropout(rate=0.5),
+        tf.keras.layers.Dense(3, activation=tf.nn.softmax)
+
+    ])
+    """
+    model = tf.keras.Sequential([
+        tf.keras.layers.Reshape((28, 28, 1), input_shape=(784,)),
+        tf.keras.layers.Conv2D(32, kernel_size=(3, 3), activation='relu'),
+        tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+        tf.keras.layers.MaxPooling2D(pool_size=(2, 2)),
+        tf.keras.layers.Dropout(0.25),
+        tf.keras.layers.Flatten(),
+        tf.keras.layers.Dense(128, activation='relu'),
+        tf.keras.layers.Dropout(0.5),
+        tf.keras.layers.Dense(3, activation='softmax')
+    ])
+    """
+
+    model.compile(loss=tf.keras.losses.categorical_crossentropy,
+                  optimizer=tf.keras.optimizers.Adadelta(),
+                  metrics=['accuracy'])
+    """
+    model.compile(optimizer=tf.train.AdamOptimizer(learning_rate=0.001),
+                  loss=tf.keras.losses.categorical_crossentropy,
+                  metrics=[tf.keras.metrics.categorical_accuracy])
+    """
+    return model

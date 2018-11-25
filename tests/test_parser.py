@@ -12,8 +12,7 @@ class TestParse:
     def test_parse(self):
         """
         """
-        opts = p.parse(['-v', 'lg', 'imgd', 'ans'])
-        assert opts.logdir == 'lg'
+        opts = p.parse(['-v', 'imgd', 'ans'])
         assert opts.imagedir == 'imgd'
         assert opts.answerfile == 'ans'
         assert opts.verbose
